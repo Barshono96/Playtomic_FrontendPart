@@ -1,5 +1,5 @@
 import React from 'react';
-const Dashboard: React.FC = () => {
+const MainPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
         <header className="bg-blue-600 text-white p-4">
@@ -50,4 +50,4 @@ const Dashboard: React.FC = () => {
     );
   };
   
-  export default Dashboard;
+  export default MainPage;
