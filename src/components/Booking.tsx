@@ -7,12 +7,26 @@ import "slick-carousel/slick/slick-theme.css";
 import SlickImage1 from "../Assets/slide1.jpg";
 import SlickImage2 from "../Assets/slide2.jpg";
 import SlickImage3 from "../Assets/slide3.jpg";
+import axiosInstance from "../api/axiosInstance";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
+interface BookingData {
+
+  time: Date;
+  slot: number;
+}
 
 const Booking: React.FC = () => {
+  const {userId,clubId,courtId} = useParams();
+  // console.log("userId:", userId);
+  // console.log("clubId:", clubId);
+  // console.log("courtId:", courtId);
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [playerCount, setPlayerCount] = useState<number>(2); // Default player count is 2
-
+  const [playerCount, setPlayerCount] = useState<number>(2); 
+  
   const times = [
     "9:00 am",
     "10:00 am",
@@ -36,8 +50,8 @@ const Booking: React.FC = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true, // Enable autoplay
-    autoplaySpeed: 3000, // Set autoplay speed in milliseconds (e.g., 3000ms = 3s)
+    autoplay: true, 
+    autoplaySpeed: 3000, 
   };
 
   const handleIncrement = () => {
@@ -46,6 +60,25 @@ const Booking: React.FC = () => {
 
   const handleDecrement = () => {
     setPlayerCount((prevCount) => (prevCount > 2 ? prevCount - 1 : prevCount));
+  };
+
+  const handleConfirmBooking = async () => {
+    if (!selectedDate || !selectedTime) {
+      return;
+    }
+
+    const bookingData: BookingData = {
+      time: new Date(selectedDate),
+      slot: playerCount,
+    };
+
+    try {
+      const response = await axiosInstance.post(`/bookings/${userId}/${clubId}/${courtId}`, bookingData);
+
+      console.log("Booking successful:", response.data);
+    } catch (error) {
+      console.error("Error creating booking:", error);
+    }
   };
 
   return (
@@ -121,6 +154,7 @@ const Booking: React.FC = () => {
           <button
             className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition-colors duration-200"
             disabled={!selectedDate || !selectedTime}
+            onClick={handleConfirmBooking}
           >
             Confirm Booking
           </button>
