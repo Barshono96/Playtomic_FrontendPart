@@ -1,8 +1,9 @@
 import React from "react";
-import Slide1 from "../Assets/slide1.jpg"; 
+import Slide1 from "../Assets/slide1.jpg";
 import Slide2 from "../Assets/slide2.jpg";
 import Slide3 from "../Assets/slide3.jpg";
 import Slide4 from "../Assets/Court.jpg";
+import { Link } from "react-router-dom";
 
 interface Court {
   id: number;
@@ -32,10 +33,12 @@ const clubs: Club[] = [
 
 const ClubList: React.FC = () => {
   const club = clubs[0]; // Assuming there is only one club as per the design
-  
+
   return (
     <div className="relative p-4 bg-gradient-to-br from-blue-100 to-white min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">{club.name}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">
+        {club.name}
+      </h1>
       <div className="grid grid-cols-2 gap-6 max-w-md mx-auto">
         {club.courts.map((court) => (
           <div
@@ -53,24 +56,26 @@ const ClubList: React.FC = () => {
           </div>
         ))}
       </div>
-      <button
-        className="fixed bottom-4 right-4 w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors"
-        aria-label="Add Club"
-      >
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      <Link to="/clubs/:clubId">
+        <button
+          className="fixed bottom-4 right-4 w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors"
+          aria-label="Add Club"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M12 4v16m8-8H4"
-          ></path>
-        </svg>
-      </button>
+          <svg
+            className="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 4v16m8-8H4"
+            ></path>
+          </svg>
+        </button>
+      </Link>
     </div>
   );
 };

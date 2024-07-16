@@ -3,6 +3,7 @@ import Slide1 from "../Assets/slide1.jpg";
 import Slide2 from "../Assets/slide2.jpg";
 import Slide3 from "../Assets/slide3.jpg";
 import Slide4 from "../Assets/Court.jpg";
+import { Link } from "react-router-dom";
 
 interface Club {
   id: number;
@@ -61,6 +62,7 @@ const ClubList: React.FC = () => {
           </div>
         ))}
       </div>
+      <Link to="/create-club">
       <button
         className="fixed bottom-4 right-4 w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors"
         aria-label="Add Club"
@@ -79,6 +81,7 @@ const ClubList: React.FC = () => {
           ></path>
         </svg>
       </button>
+      </Link>
     </div>
   );
 };

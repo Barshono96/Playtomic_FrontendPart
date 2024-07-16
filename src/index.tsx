@@ -12,7 +12,7 @@ import CreateClub from "./components/CreateClub";
 import ClubPage from "./pages/ClubPage";
 import MainPage from "./components/MainPage";
 import Booking from "./components/Booking";
-import ClubList from "./components/ClubList";
+import VClubList from "./components/VendorClubList";
 import VcourtList from "./components/VendorCourtList"
 import Error from "./pages/Error.page";
 
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
   },
   {
     path: "clublist",
-    element: <ClubList />,
+    element: <VClubList />,
   },
   {
     path: "courtlist",

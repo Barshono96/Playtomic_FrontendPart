@@ -20,6 +20,8 @@ const SignIn: React.FC = () => {
     try {
       const response = await login(formData);
       localStorage.setItem('token', response.token); // Store token in localStorage upon successful login
+      localStorage.setItem('user', JSON.stringify (response.sendUserObject))
+      console.log(response);
       navigate('/MainPage'); // Navigate to main page upon successful login
     } catch (error) {
       console.error('Login failed', error);
