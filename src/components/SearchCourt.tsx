@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Slide1 from "../Assets/slide1.jpg";
 import Slide2 from "../Assets/slide2.jpg";
 import Slide3 from "../Assets/slide3.jpg";
@@ -28,19 +28,39 @@ const clubs: Club[] = [
       { id: 4, name: "Court 4", imageUrl: Slide4 },
     ],
   },
-  
+  // Add more clubs and courts as needed
 ];
 
-const SearchCourt: React.FC = () => {
-  const club = clubs[0]; 
+const ClubList: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const club = clubs[0]; // Assuming there is only one club as per the design
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredCourts = club.courts.filter((court) =>
+    court.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="relative p-4 bg-gradient-to-br from-blue-100 to-white min-h-screen">
       <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">
         {club.name}
       </h1>
+      
+      <div className="flex justify-center mb-6">
+        <input
+          type="text"
+          placeholder="Search courts..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="w-full max-w-md p-2 border border-blue-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      
       <div className="grid grid-cols-2 gap-6 max-w-md mx-auto">
-        {club.courts.map((court) => (
+        {filteredCourts.map((court) => (
           <div
             key={court.id}
             className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105"
@@ -80,4 +100,4 @@ const SearchCourt: React.FC = () => {
   );
 };
 
-export default SearchCourt;
+export default ClubList;
