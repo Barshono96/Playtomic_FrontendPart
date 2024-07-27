@@ -3,9 +3,13 @@ import Slide1 from "../Assets/slide1.jpg";
 import Slide2 from "../Assets/slide2.jpg";
 import Slide3 from "../Assets/slide3.jpg";
 import Slide4 from "../Assets/Court.jpg";
+import  Navbar  from "./Navbar";
+import FixedPlusButton from "./FixedButton";
 import { Link } from "react-router-dom";
 
 const MainPage: React.FC = () => {
+  const user = JSON.parse(localStorage.getItem("user") as any ) ;
+  console.log("user=====", user);
   return (
     <div className="bg-gradient-to-r from-blue-500 to-teal-400 min-h-screen flex flex-col relative">
       <Header />
@@ -14,7 +18,8 @@ const MainPage: React.FC = () => {
         <Card />
       </div>
       <Navbar />
-      <FixedPlusButton />
+      {user.userType.toLowerCase() =="vendor" && <FixedPlusButton/>}
+      {/* <FixedPlusButton /> */}
     </div>
   );
 };
@@ -86,56 +91,7 @@ const Card: React.FC = () => {
   );
 };
 
-const Navbar: React.FC = () => {
-  return (
-    <nav className="bg-white shadow-inner flex justify-around p-4">
-      <button className="text-blue-700">
-        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2l-5.5 9h11L12 2zM2 20h20v2H2v-2zm10-4.5l-5.5 9h11l-5.5-9z" />
-        </svg>
-        <span className="block text-xs">Home</span>
-      </button>
-      <Link to="/news">
-        <button className="text-blue-700">
-          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M3 12h18v2H3v-2zm0 6h18v2H3v-2zM3 6h18v2H3V6z" />
-          </svg>
-          <span className="block text-xs">News</span>
-        </button>
-      </Link>
-      <Link to="/profile">
-        <button className="text-blue-700">
-          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2a7 7 0 00-7 7v5H4a2 2 0 00-2 2v2a2 2 0 002 2h16a2 2 0 002-2v-2a2 2 0 00-2-2h-1V9a7 7 0 00-7-7zm-7 9a5 5 0 1110 0v5H5v-5zm10 5H9v5h6v-5z" />
-          </svg>
-          <span className="block text-xs">Profile</span>
-        </button>
-      </Link>
-    </nav>
-  );
-};
 
-const FixedPlusButton: React.FC = () => {
-  return (
-    <button
-      className="fixed bottom-20 right-4 w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors"
-      aria-label="Add Club"
-    >
-      <svg
-        className="w-8 h-8"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M12 4v16m8-8H4"
-        ></path>
-      </svg>
-    </button>
-  );
-};
+
 
 export default MainPage;

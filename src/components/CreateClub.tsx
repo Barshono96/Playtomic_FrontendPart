@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import BackgroundImage from '../Assets/Background.jpg';
-import { createClub } from '../api/clubApi';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import BackgroundImage from "../Assets/slide2.jpg";
+import { createClub } from "../api/clubApi";
+import { useNavigate } from "react-router-dom";
 
 const CreateClub: React.FC = () => {
   const [clubData, setClubData] = useState({
-    clubname: '',
-    address: '',
-    country: '',
-    city: '',
+    clubname: "",
+    address: "",
+    country: "",
+    city: "",
   });
 
   const navigate = useNavigate();
@@ -21,12 +21,11 @@ const CreateClub: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const userId = '1';
+      const userId = "1";
       await createClub(userId, clubData);
-      navigate('/dashboard'); 
+      navigate("/clublist");
     } catch (error) {
-      console.error('Error creating club', error);
-
+      console.error("Error creating club", error);
     }
   };
 
@@ -35,11 +34,11 @@ const CreateClub: React.FC = () => {
       className="relative flex items-center justify-center min-h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${BackgroundImage})` }}
     >
-      <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg max-w-md w-full">
+      <div className="bg-white bg-opacity-30 p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-2xl font-bold text-center mb-6">Create Club</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700">Club Name</label>
+            <label className="block text-black-700 font-bold">Club Name</label>
             <input
               type="text"
               name="clubname"
@@ -50,7 +49,7 @@ const CreateClub: React.FC = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Address</label>
+            <label className="block text-black-700 font-bold">Address</label>
             <input
               type="text"
               name="address"
@@ -61,7 +60,7 @@ const CreateClub: React.FC = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Country</label>
+            <label className="block text-black-700 font-bold">Country</label>
             <input
               type="text"
               name="country"
@@ -72,7 +71,7 @@ const CreateClub: React.FC = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">City</label>
+            <label className="block text-black-700 font-bold">City</label>
             <input
               type="text"
               name="city"

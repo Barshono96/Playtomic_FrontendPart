@@ -84,7 +84,7 @@ const SearchClub: React.FC = () => {
         ))}
       </div>
 
-      <Link to="/create-club">
+      <Link to="/createclubs/:userId">
         <button
           className="fixed bottom-4 right-4 w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors"
           aria-label="Add Club"
