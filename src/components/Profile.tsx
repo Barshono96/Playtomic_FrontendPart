@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../api/axiosInstance';
+import Navbar from './Navbar';
 
-interface UserProfile {
+interface User {
   id: number;
   username: string;
   email: string;
@@ -10,47 +12,75 @@ interface UserProfile {
 }
 
 const Profile: React.FC = () => {
-  const [user, setUser] = useState<UserProfile | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Replace with your actual API endpoint
-    axios.get('/api/user')
-      .then(response => setUser(response.data))
-      .catch(error => console.error('Error fetching user data:', error));
+    const fetchUserData = async () => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (!storedUser) {
+          throw new Error('No user found in localStorage');
+        }
+
+        const { userId } = JSON.parse(storedUser);
+        const response = await axiosInstance.get(`/users/${userId}`);
+        setUser(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/signin'); // Navigate to the SignIn page after logout
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <div>No user data available</div>;
+  }
+
   return (
-    <div className="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden md:max-w-2xl">
-      <div className="md:flex">
-        <div className="w-full p-4">
-          <div className="text-center">
-            <img className="h-24 w-24 rounded-full mx-auto" src="https://via.placeholder.com/150" alt="User avatar" />
-            <h1 className="text-lg font-semibold text-gray-900">{user?.username}</h1>
-            <p className="text-sm text-gray-600">Add my location</p>
-          </div>
-          <div className="text-center mt-4">
-            <div className="flex justify-around">
-              <div>
-                <span className="block text-gray-600 text-sm">Matches</span>
-                <span className="block text-gray-900 text-lg font-semibold">0</span>
-              </div>
-              <div>
-                <span className="block text-gray-600 text-sm">Followers</span>
-                <span className="block text-gray-900 text-lg font-semibold">0</span>
-              </div>
-              <div>
-                <span className="block text-gray-600 text-sm">Following</span>
-                <span className="block text-gray-900 text-lg font-semibold">0</span>
-              </div>
-            </div>
-            <div className="mt-4">
-              <p className="text-gray-600 text-sm">Give the profile info from user table</p>
-            </div>
-          </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-blue-50">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+        <h1 className="text-2xl font-bold text-center mb-6">User Profile</h1>
+        <div className="mb-4">
+          <label className="block text-gray-700">Username</label>
+          <div className="w-full p-2 border border-gray-300 rounded mt-1">{user.username}</div>
         </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Email</label>
+          <div className="w-full p-2 border border-gray-300 rounded mt-1">{user.email}</div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Type</label>
+          <div className="w-full p-2 border border-gray-300 rounded mt-1">{user.type}</div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Address</label>
+          <div className="w-full p-2 border border-gray-300 rounded mt-1">{user.address}</div>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="w-full bg-red-600 text-white p-2 rounded hover:bg-red-700 transition duration-300"
+        >
+          Logout
+        </button>
       </div>
+      <Navbar />
     </div>
   );
-}
+};
 
 export default Profile;

@@ -1,60 +1,47 @@
-import React, { useState } from "react";
-import Slide1 from "../Assets/slide1.jpg"; 
-import Slide2 from "../Assets/slide2.jpg";
-import Slide3 from "../Assets/slide3.jpg";
-import Slide4 from "../Assets/Court.jpg";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getAllClubs } from "../api/clubApi";
 
 interface Club {
   id: number;
-  name: string;
+  clubname: string;
   address: string;
-  imageUrl: string;
+  country: string;
+  city: string;
+  images: string[];
 }
 
-const clubs: Club[] = [
-  {
-    id: 1,
-    name: "Club 1",
-    address: "Address 1",
-    imageUrl: Slide1,
-  },
-  {
-    id: 2,
-    name: "Club 2",
-    address: "Address 2",
-    imageUrl: Slide2,
-  },
-  {
-    id: 3,
-    name: "Club 3",
-    address: "Address 3",
-    imageUrl: Slide3,
-  },
-  {
-    id: 4,
-    name: "Club 4",
-    address: "Address 4",
-    imageUrl: Slide4,
-  },
-  // Add more clubs as needed
-];
-
 const SearchClub: React.FC = () => {
+  const [clubs, setClubs] = useState<Club[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        const fetchedClubs = await getAllClubs(); // Fetch all clubs
+        setClubs(fetchedClubs);
+      } catch (error) {
+        console.error("Error fetching clubs", error);
+      }
+    };
+
+    fetchClubs();
+  }, []);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
   const filteredClubs = clubs.filter((club) =>
-    club.name.toLowerCase().includes(searchTerm.toLowerCase())
+    club.clubname.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="relative p-4 bg-gradient-to-br from-blue-100 to-white min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">Your Club List</h1>
-      
+      <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">
+        Clubs
+      </h1>
+
       <div className="flex justify-center mb-6">
         <input
           type="text"
@@ -64,46 +51,28 @@ const SearchClub: React.FC = () => {
           className="w-full max-w-md p-2 border border-blue-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
         />
       </div>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <div className="grid grid-cols-2 gap-6 max-w-md mx-auto">
         {filteredClubs.map((club) => (
-          <div
-            key={club.id}
-            className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105"
-          >
-            <img
-              src={club.imageUrl}
-              alt={club.name}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              <h2 className="text-2xl font-bold text-blue-700">{club.name}</h2>
-              <p className="text-gray-600">{club.address}</p>
+          <Link to={`/searchcourts/${club.id}/courts`} key={club.id}>
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105">
+              <img
+                src={club.images[0]}
+                alt={club.clubname}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4 text-center">
+                <h3 className="text-xl font-bold text-blue-700">
+                  {club.clubname}
+                </h3>
+                <p>Address: {club.address}</p>
+                <p>Country: {club.country}</p>
+                <p>City: {club.city}</p>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
-
-      <Link to="/createclubs/:userId">
-        <button
-          className="fixed bottom-4 right-4 w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors"
-          aria-label="Add Club"
-        >
-          <svg
-            className="w-8 h-8"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 4v16m8-8H4"
-            ></path>
-          </svg>
-        </button>
-      </Link>
     </div>
   );
 };
