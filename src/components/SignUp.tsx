@@ -72,7 +72,7 @@ const SignUp: React.FC = () => {
             >
               <option value="">Select Type</option>
               <option value="Player">Player</option>
-              <option value="Club Owner">Club Owner</option>
+              <option value="Owner">Owner</option>
             </select>
           </div>
           <div className="mb-4">

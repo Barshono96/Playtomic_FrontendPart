@@ -20,6 +20,7 @@ const SearchClub: React.FC = () => {
       try {
         const fetchedClubs = await getAllClubs(); // Fetch all clubs
         setClubs(fetchedClubs);
+        console.log("clubs======",getAllClubs);
       } catch (error) {
         console.error("Error fetching clubs", error);
       }

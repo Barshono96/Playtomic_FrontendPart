@@ -1,44 +1,79 @@
+
+
 // import React, { useState } from "react";
-// // import BackgroundImage from "../Assets/clubimages.jpg";
+// import axios from "axios";
 // import { createClub } from "../api/clubApi";
 // import { useNavigate } from "react-router-dom";
 
+// interface ClubData {
+//   clubname: string;
+//   address: string;
+//   country: string;
+//   city: string;
+//   images: string[];
+// }
+
 // const CreateClub: React.FC = () => {
-//   const [clubData, setClubData] = useState({
+//   const [clubData, setClubData] = useState<ClubData>({
 //     clubname: "",
 //     address: "",
 //     country: "",
 //     city: "",
+//     images: [],
 //   });
 
-//   const navigate = useNavigate();
+//   // const navigate = useNavigate();
 
 //   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 //     const { name, value } = e.target;
 //     setClubData({ ...clubData, [name]: value });
 //   };
 
-  
+//   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+//     if (e.target.files) {
+//       const files = Array.from(e.target.files);
+//       const imageUrls: string[] = [];
+
+//       for (const file of files) {
+//         const formData = new FormData();
+//         formData.append("file", file);
+//         formData.append("upload_preset", "unsigned_preset");
+//         formData.append("folder", "playtomic");
+
+//         try {
+//           const res = await axios.post("https://api.cloudinary.com/v1_1/dd3xobziv/image/upload", formData);
+//           imageUrls.push(res.data.secure_url);
+//           console.log("Image uploaded:", res.data.secure_url); // Debug line
+//         } catch (error) {
+//           console.error("Error uploading image", error);
+//         }
+//       }
+
+//       setClubData({ ...clubData, images: imageUrls });
+//       console.log("Updated clubData with images:", { ...clubData, images: imageUrls }); // Debug line
+//     }
+//   };
 
 //   const handleSubmit = async (e: React.FormEvent) => {
 //     e.preventDefault();
 //     try {
-//       const userId = "1";
-//       await createClub(userId, clubData);
-//       navigate("/clublist");
+//       const user = localStorage.getItem('user');
+//       if (user) {
+//         const { userId } = JSON.parse(user);
+//         await createClub(userId, clubData);
+//         // navigate("/clublist");
+//       }
 //     } catch (error) {
 //       console.error("Error creating club", error);
 //     }
 //   };
 
 //   return (
-//     <div
-//       className="relative flex items-center justify-center min-h-screen bg-cover bg-center"
-//       // style={{ backgroundImage: `url(${BackgroundImage})` }}
-//     >
-//       <div className=" p-8 rounded-lg shadow-lg max-w-md w-full">
+//     <div className="relative flex items-center justify-center min-h-screen bg-cover bg-center">
+//       <div className="p-8 rounded-lg shadow-lg max-w-md w-full">
 //         <h1 className="text-2xl font-bold text-center mb-6">Create Club</h1>
 //         <form onSubmit={handleSubmit}>
+//           {/* Club Name */}
 //           <div className="mb-4">
 //             <label className="block text-black-700 font-bold">Club Name</label>
 //             <input
@@ -50,6 +85,7 @@
 //               className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500"
 //             />
 //           </div>
+//           {/* Address */}
 //           <div className="mb-4">
 //             <label className="block text-black-700 font-bold">Address</label>
 //             <input
@@ -61,6 +97,7 @@
 //               className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500"
 //             />
 //           </div>
+//           {/* Country */}
 //           <div className="mb-4">
 //             <label className="block text-black-700 font-bold">Country</label>
 //             <input
@@ -72,6 +109,7 @@
 //               className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500"
 //             />
 //           </div>
+//           {/* City */}
 //           <div className="mb-4">
 //             <label className="block text-black-700 font-bold">City</label>
 //             <input
@@ -80,6 +118,17 @@
 //               value={clubData.city}
 //               onChange={handleChange}
 //               placeholder="Enter city"
+//               className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500"
+//             />
+//           </div>
+//           {/* Images */}
+//           <div className="mb-4">
+//             <label className="block text-black-700 font-bold">Images</label>
+//             <input
+//               type="file"
+//               name="images"
+//               multiple
+//               onChange={handleFileChange}
 //               className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500"
 //             />
 //           </div>
@@ -119,7 +168,7 @@ const CreateClub: React.FC = () => {
     images: [],
   });
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -140,14 +189,13 @@ const CreateClub: React.FC = () => {
         try {
           const res = await axios.post("https://api.cloudinary.com/v1_1/dd3xobziv/image/upload", formData);
           imageUrls.push(res.data.secure_url);
-          console.log("Image uploaded:", res.data.secure_url); // Debug line
+          console.log("Image uploaded:", res.data.secure_url);
         } catch (error) {
           console.error("Error uploading image", error);
         }
       }
 
       setClubData({ ...clubData, images: imageUrls });
-      console.log("Updated clubData with images:", { ...clubData, images: imageUrls }); // Debug line
     }
   };
 
@@ -158,7 +206,7 @@ const CreateClub: React.FC = () => {
       if (user) {
         const { userId } = JSON.parse(user);
         await createClub(userId, clubData);
-        // navigate("/clublist");
+        // navigate("/clublist"); 
       }
     } catch (error) {
       console.error("Error creating club", error);
@@ -170,7 +218,6 @@ const CreateClub: React.FC = () => {
       <div className="p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-2xl font-bold text-center mb-6">Create Club</h1>
         <form onSubmit={handleSubmit}>
-          {/* Club Name */}
           <div className="mb-4">
             <label className="block text-black-700 font-bold">Club Name</label>
             <input
@@ -182,7 +229,6 @@ const CreateClub: React.FC = () => {
               className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500"
             />
           </div>
-          {/* Address */}
           <div className="mb-4">
             <label className="block text-black-700 font-bold">Address</label>
             <input
@@ -194,7 +240,6 @@ const CreateClub: React.FC = () => {
               className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500"
             />
           </div>
-          {/* Country */}
           <div className="mb-4">
             <label className="block text-black-700 font-bold">Country</label>
             <input
@@ -206,7 +251,6 @@ const CreateClub: React.FC = () => {
               className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500"
             />
           </div>
-          {/* City */}
           <div className="mb-4">
             <label className="block text-black-700 font-bold">City</label>
             <input
@@ -218,7 +262,6 @@ const CreateClub: React.FC = () => {
               className="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500"
             />
           </div>
-          {/* Images */}
           <div className="mb-4">
             <label className="block text-black-700 font-bold">Images</label>
             <input

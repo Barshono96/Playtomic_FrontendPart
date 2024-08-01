@@ -32,3 +32,17 @@ export const getCourts = async (clubId: string) => {
     throw error;
   }
 };
+
+export const getAllCourts = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/courts`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error while retrieving all courts", error.message);
+    } else {
+      console.error("Unexpected error while retrieving all courts", error);
+    }
+    throw error;
+  }
+};
